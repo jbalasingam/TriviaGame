@@ -1,29 +1,43 @@
 $(document).ready(function () {
+    $(".start").show();
+    $(".reset").hide();
+    
+    var questionTime = 3;
+    var ResetTime = 3;
+    var intervalID;
+    var number = 0;
 
-    var questionTime = 3000;
+
     var currentQuestion;
-    var correctAnswers = ["Michael Jordan", "Koenigsegg","1967"];
-    var wrongAnswer ;
+    var Answers = [1,1,3,3];
     var index = [0,1,2,3];
     //function sets the variable values as well as moving the thumbnails based on selection
-    function begin() {
+
+
+    function StartOnClick () {
+
+        $(".start").hide();
+        
+
         first = {
             id: 0,
-            question: "Who is the best NBA player of all time?",
+            question: "Who is the greatest NBA player of all time?",
             answer1:"Lebron James",
             answer2:"Michael Jordan",
             answer3:"Stephen Curry",
             answer4:"Mats Sundin",
+            CorrectAnswer:"Michael Jordan",
 
         }
 
         second = {
             id: 1,
-            question: "What is the make of the fasted car?",
+            question: "What is the make of the fastest car?",
             answer1:"Koenigsegg",
             answer2:"Bugatti",
             answer3:"Aston Martin",
             answer4:"SpaceX",
+            CorrectAnswer:"Koenigsegg",
 
         }
 
@@ -34,6 +48,7 @@ $(document).ready(function () {
             answer2:"1966",
             answer3:"1967",
             answer4:"1968",
+            CorrectAnswer:"1967",
 
         }
 
@@ -44,6 +59,7 @@ $(document).ready(function () {
             answer2:"Calgary",
             answer3:"Toronto",
             answer4:"Kingston",
+            CorrectAnswer:"Toronto",
 
         }
 
@@ -53,106 +69,95 @@ $(document).ready(function () {
             questionSelection = [first,second,third,fourth];
 
             // clears all character divs
-            $(".insert").empty();
+            $(".timerJumbotron").empty();
+            $(".answerJumbotron").empty();
+            $(".questionJumbotron").empty();
 
+        // when character has been selected
+        if(currentQuestion === null && wrongAnswer === null && number < questionSelection.length) {
+            //start the timer as soon as user clicks
+            runTimer();
+
+            currentQuestion = questionSelection[number];
+            // set some variables that will be used to keep score
+            var correctAnswers = 0;
+            var wrongAnswers = 0;
+
+            //function addQuestions (value) {
+            //the question and answer section
+            $("<div>").addClass("question insert 0-insert").html(currentQuestion.question).appendTo($(".questionJumbotron"));
             
+            $("<div>").addClass("btn btn-danger answers insert 1-insert").attr('id','0').html(currentQuestion.answer1).appendTo($(".answerJumbotron"));
+
+            $("<div>").addClass("btn btn-danger answers insert 2-insert").attr('id','1').html(currentQuestion.answer2).insertAfter($(".1-insert"));
+           
+            $("<div>").addClass("btn btn-danger answers insert 3-insert").attr('id','2').html(currentQuestion.answer3).insertAfter($(".2-insert"));
+           
+            $("<div>").addClass("btn btn-danger answers insert 4-insert").attr('id','3').html(currentQuestion.answer4).insertAfter($(".3-insert"));
+            
+             //calls the decrement function every 1 second
+             function runTimer (){
+                clearInterval(intervalID);
+                intervalID = setInterval(decrement,1000);
+            }
+            
+            
+
+        //timer function - ---------------------------------------------------------------------------------//
+        
+            function decrement() {
+               
+                
+                questionTime -= 1;
+ 
+                 
+
+                if (questionTime <= 0 && number < questionSelection.length) { //if you run out of time
+                     stop()
+
+                     $(".timerJumbotron").empty();
+                     $("<div>").addClass("TimeOut").append("<p>You didn't reply in time. See Answer Below</p>").appendTo($(".timerJumbotron"));
+                     $(".answerJumbotron").empty();
+                     $("<div>").addClass("btn btn-success currentAnswer").html(currentQuestion.CorrectAnswer).appendTo($(".answerJumbotron"));
+
+                     number++;
+                    
+                     setTimeout(StartOnClick,2000);
+
+                 } else {
+
+                    $(".timerJumbotron").html("<h2>" + questionTime + "</h2>");
+                
+                }
+
+            };//end decrement function
+     
+            
+            function stop () {
+                clearInterval(intervalID);
+                questionTime = questionTime + ResetTime;
+            } 
+
+        } else  {
+
+            $(".start").show();//end timer function
+         
+                };
+    }//end StartOnClick function
+
+     
+     //};// start on click function
+
+    $(".reset").on("click", function() {
+        $(".reset").hide();
+        $(".start").show();
+    });
+
 
     $(".start").on("click", function() {
-        // when character has been selected
-        if(currentQuestion === null && wrongAnswer === null) {
-            //hide the start button as soon as the user clicks it
-
-
-            $(".start").hide();
-
-            $("<div>").addClass("question insert first-insert").html(first.question).appendTo($(".jumbotron"));
-            
-            $("<div>").addClass("btn btn-danger answers insert second-insert").html(first.answer1).appendTo($(".first-insert"));
-
-            $("<div>").addClass("btn btn-danger answers insert third-insert").html(first.answer2).appendTo($(".first-insert"));
-           
-            $("<div>").addClass("btn btn-danger answers insert fourth-insert").html(first.answer3).appendTo($(".first-insert"));
-           
-            $("<div>").addClass("btn btn-danger answers insert fifth-insert").html(first.answer4).appendTo($(".first-insert"));
-            
-            $("<br></br>").insertBefore(".insert");
-
-			// append new div to character selection
-			$("#characterSelection").append(newCharacterDiv);
-
-
-
-
-
-
-
-
-
-            //get id of character selected
-            //var ID = parseInt($(this).attr("id"));
-
-            myCharacter = characters[ID];
-
-            // loop through character array
-            $.each(characters, function(index,myCharacter) {
-                // add unselected characters to enemySpace array
-                if(myCharacter.id !== ID) {
-                    attackers.push(myCharacter);
-                    $("#"+myCharacter.id).removeClass("neutral attacker").appendTo($(".enemySpace"));
-                    $("#"+myCharacter.id).addClass("defense");
-                } else {
-                    $("#"+myCharacter.id).removeClass("neutral defense").appendTo($('.mine'));
-                }
-                
-            });//end loop for myCharacter   	
-         
-        }//end defense function
-     
-     });
-     
-      $(".reset").hide();
-} //end begin function
-
-//start game
-begin();
-
-
-
-    // //-----------------------------------------------------------------------------------------------------//
-    // //Start the attack logic on clicking the attack button
-    // $(".attack").on("click", function() {
-    //     if(myCharacter !== null && myCharacter.Power > 0 && attackers.length > 0) {
-    //         console.log("Attack button works");
-    //         // created variable to store game status messages
-    //         var message = "";
-
-    //         // when defender has been selected
-    //         if(Foe !== null) {
-
-    //             // reduce the attackers power by the attackpower of the your character
-    //             Foe.Power -= myCharacter.attackPower;
-    //             message += myCharacter.name + " attacked " + Foe.name + " and caused a " + myCharacter.attackPower + " point damage.<br>";
-
-    //             console.log(message);
-    //             // update the attackers power in the image caption.
-    //             $("."+Foe.id + "Power").html(Foe.Power);
-
-    //             //reduce your character's power by the counterattact power of your foe
-    //             myCharacter.Power -= Foe.counterAttackPower;
-	// 			message += Foe.name + " counter-attacked and caused a " + Foe.counterAttackPower + " point damage.<br>";
-                
-    //             console.log(message);
-	// 			// update your character's power
-	// 			$("."+myCharacter.id + "Power").html(myCharacter.Power);
-
-    //             // create something here with if statements depending on the first person to run out of points
-
-    //             // you only win if there are no attackers left in the array
-
-    //         };
-    //         $(".message").html(message);
-    //     }
-    // });//end attack on.click
-
+        $(".reset").hide();
+        number = 0;
+        StartOnClick();
+    });
 
 })//document ready//

@@ -33,9 +33,26 @@ header {
 
 .btn {
     margin: 3px;
+    align-items: center;
+    justify-content: center;
 }
 
-.question {
-    margin-bottom:50px;
-    font-size: 25px;
+.insert {
+    padding:10px;
+    font-size: 20px;
+    float:center;
+    align-items: center;
+    justify-content: center;
+}
+
+.timerJumbotron{
+    float:right;
+    font-size:50px;
+}
+
+.TimeOut {
+    font-size:25px;
+    text-align: center;
+    color:red;
+
 }
