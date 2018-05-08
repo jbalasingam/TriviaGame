@@ -107,11 +107,8 @@ $(document).ready(function () {
         
             function decrement() {
                
-                
                 questionTime -= 1;
  
-                 
-
                 if (questionTime <= 0 && number < questionSelection.length) { //if you run out of time
                      stop()
 
@@ -136,18 +133,21 @@ $(document).ready(function () {
             function stop () {
                 clearInterval(intervalID);
                 questionTime = questionTime + ResetTime;
+                
             } 
 
         } else  {
 
-            $(".start").show();//end timer function
-         
+            $("<div>").addClass("btn btn-primary btn-lg start").html("Press Start To Begin").appendTo($(".questionJumbotron"));
+            $(".start").on("click", function() {
+                number = 0;
+                StartOnClick();
+            });
                 };
     }//end StartOnClick function
 
      
      //};// start on click function
-
     $(".reset").on("click", function() {
         $(".reset").hide();
         $(".start").show();
