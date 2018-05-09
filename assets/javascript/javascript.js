@@ -127,8 +127,9 @@ $(document).ready(function () {
                  } else {
 
                             $(".timerJumbotron").html("<h2>" + questionTime + "</h2>");
-
-                            $(".answers").unbind().click(function() {
+                            
+                         
+                            $(".answers").one('click', function() {
                                 var id = $(this).attr("id");
                                 
                                 if (id===currentQuestion.CorrectAnswer) {
@@ -142,6 +143,8 @@ $(document).ready(function () {
                                     number++ ;
                                     console.log(correctAnswers)
                                     setTimeout(StartOnClick,2000); 
+
+                    
 
                                 } else if (id !== currentQuestion.CorrectAnswer) {
                                    
@@ -178,7 +181,7 @@ $(document).ready(function () {
 
             $("<div>").addClass("btn btn-primary btn-lg start").html("Press Start To Begin").appendTo($(".questionJumbotron"));
             $(".timerJumbotron").empty();
-            $("<div>").addClass("Correct").append("<p>You got "+correctAnswers+ " correct answer(s) and "+wrongAnswers+ " wrong answer(s)</p>").appendTo($(".timerJumbotron"));
+            $("<div>").addClass("Correct").append("<p>You got "+correctAnswers+ "/"+questionSelection.length+ " right.</p>").appendTo($(".timerJumbotron"));
 
             $(".start").on("click", function() {
                 number = 0;
