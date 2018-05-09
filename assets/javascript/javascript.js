@@ -163,7 +163,7 @@ $(document).ready(function () {
                             });//end answer on click
                         
                 }//end else
-                
+
                 questionTime -= 1;
             };//end decrement function
      
@@ -178,7 +178,7 @@ $(document).ready(function () {
 
             $("<div>").addClass("btn btn-primary btn-lg start").html("Press Start To Begin").appendTo($(".questionJumbotron"));
             $(".timerJumbotron").empty();
-            $("<div>").addClass("Correct").append("<p>You got "+correctAnswers+ " correct answers and "+wrongAnswers+ " wrong answers</p>").appendTo($(".timerJumbotron"));
+            $("<div>").addClass("Correct").append("<p>You got "+correctAnswers+ " correct answer(s) and "+wrongAnswers+ " wrong answer(s)</p>").appendTo($(".timerJumbotron"));
 
             $(".start").on("click", function() {
                 number = 0;
