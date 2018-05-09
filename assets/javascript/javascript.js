@@ -19,7 +19,6 @@ $(document).ready(function () {
     function StartOnClick () {
 
         $(".start").hide();
-        
 
         first = {
             id: 0,
@@ -76,7 +75,7 @@ $(document).ready(function () {
             $(".questionJumbotron").empty();
 
         // when character has been selected
-        if(currentQuestion === null && wrongAnswer === null && number < questionSelection.length) {
+        if(correctAnswers <= questionSelection.length && wrongAnswers <= questionSelection.length && number < questionSelection.length) {
             //start the timer as soon as user clicks
             runTimer();
 
@@ -143,7 +142,7 @@ $(document).ready(function () {
                                     number++ ;
                                     console.log(correctAnswers)
                                     setTimeout(StartOnClick,2000); 
-
+                                    
                     
 
                                 } else if (id !== currentQuestion.CorrectAnswer) {
@@ -159,7 +158,7 @@ $(document).ready(function () {
 
                                     console.log(wrongAnswers);
                                     setTimeout(StartOnClick,2000);   
-
+                                   
                                     }//end else for wrong answer
                                     
                                     //end if statement
@@ -185,6 +184,8 @@ $(document).ready(function () {
 
             $(".start").on("click", function() {
                 number = 0;
+                correctAnswers = 0
+                wrongAnswers = 0
                 StartOnClick();
             });
                 };
@@ -201,6 +202,8 @@ $(document).ready(function () {
     $(".start").on("click", function() {
         $(".reset").hide();
         number = 0;
+        correctAnswers = 0
+        wrongAnswers = 0
         StartOnClick();
     });
 
