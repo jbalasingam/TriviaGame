@@ -28,6 +28,7 @@ $(document).ready(function () {
             answer3:"Stephen Curry",
             answer4:"Mats Sundin",
             CorrectAnswer:"1",
+            CorrectAnswerText:"Michael Jordan",
 
         }
 
@@ -39,6 +40,7 @@ $(document).ready(function () {
             answer3:"Aston Martin",
             answer4:"SpaceX",
             CorrectAnswer:"0",
+            CorrectAnswerText:"Koenigsegg",
 
         }
 
@@ -50,6 +52,7 @@ $(document).ready(function () {
             answer3:"1967",
             answer4:"1968",
             CorrectAnswer:"2",
+            CorrectAnswerText:"1967",
 
         }
 
@@ -61,6 +64,7 @@ $(document).ready(function () {
             answer3:"Toronto",
             answer4:"Kingston",
             CorrectAnswer:"2",
+            CorrectAnswerText:"Toronto",
 
         }
 
@@ -101,21 +105,18 @@ $(document).ready(function () {
                 intervalID = setInterval(decrement,1000);
             }
             
-            
-
         //timer function - ---------------------------------------------------------------------------------//
         
             function decrement() {
-               
-               
- 
+                questionTime -= 1;
                 if (questionTime <= 0) { //if you run out of time
+
                      stop()
 
                      $(".timerJumbotron").empty();
                      $("<div>").addClass("TimeOut").append("<p>You didn't reply in time. See Answer Below</p>").appendTo($(".timerJumbotron"));
                      $(".answerJumbotron").empty();
-                     $("<div>").addClass("btn btn-success currentAnswer").html(currentQuestion.CorrectAnswer).appendTo($(".answerJumbotron"));
+                     $("<div>").addClass("btn btn-success currentAnswer").html(currentQuestion.CorrectAnswerText).appendTo($(".answerJumbotron"));
 
                      number++;
                     
@@ -134,10 +135,12 @@ $(document).ready(function () {
                                 if (id===currentQuestion.CorrectAnswer) {
                                     questionTime = 0;
                                     stop();
-                                    
+
+                                    $(".answers").removeClass($(".answers"));
                                     $(".timerJumbotron").empty();
                                     $("<div>").addClass("Correct").append("<p>Correct!!!!</p>").appendTo($(".timerJumbotron"));
-                                    
+                                    $(".answerJumbotron").empty();
+                                    $("<div>").addClass("btn btn-success currentAnswer").html(currentQuestion.CorrectAnswerText).appendTo($(".answerJumbotron"));
                                     correctAnswers++;
                                     number++ ;
                                     console.log(correctAnswers)
@@ -149,10 +152,11 @@ $(document).ready(function () {
                                    
                                     questionTime = 0;
                                     stop();
-
+                                    $(".answers").removeClass($(".answers"));
                                     $(".timerJumbotron").empty();
                                     $("<div>").addClass("Correct").append("<p>Wrong!!!!</p>").appendTo($(".timerJumbotron"));
-                                    
+                                    $(".answerJumbotron").empty();
+                                    $("<div>").addClass("btn btn-success currentAnswer").html(currentQuestion.CorrectAnswerText).appendTo($(".answerJumbotron"));
                                     wrongAnswers++;
                                     number++ ;
 
@@ -166,9 +170,8 @@ $(document).ready(function () {
                         
                 }//end else
 
-                questionTime -= 1;
+                
             };//end decrement function
-     
             
             function stop () {
                 clearInterval(intervalID);
