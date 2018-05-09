@@ -2,8 +2,8 @@ $(document).ready(function () {
     $(".start").show();
     $(".reset").hide();
     
-    var questionTime = 3;
-    var ResetTime = 3;
+    var questionTime = 10;
+    var ResetTime = 10;
     var intervalID;
     var number = 0;
 
@@ -11,6 +11,8 @@ $(document).ready(function () {
     var currentQuestion;
     var Answers = [1,1,3,3];
     var index = [0,1,2,3];
+    var correctAnswers = 0;
+    var wrongAnswers = 0;
     //function sets the variable values as well as moving the thumbnails based on selection
 
 
@@ -26,7 +28,7 @@ $(document).ready(function () {
             answer2:"Michael Jordan",
             answer3:"Stephen Curry",
             answer4:"Mats Sundin",
-            CorrectAnswer:"Michael Jordan",
+            CorrectAnswer:"1",
 
         }
 
@@ -37,7 +39,7 @@ $(document).ready(function () {
             answer2:"Bugatti",
             answer3:"Aston Martin",
             answer4:"SpaceX",
-            CorrectAnswer:"Koenigsegg",
+            CorrectAnswer:"0",
 
         }
 
@@ -48,7 +50,7 @@ $(document).ready(function () {
             answer2:"1966",
             answer3:"1967",
             answer4:"1968",
-            CorrectAnswer:"1967",
+            CorrectAnswer:"2",
 
         }
 
@@ -59,7 +61,7 @@ $(document).ready(function () {
             answer2:"Calgary",
             answer3:"Toronto",
             answer4:"Kingston",
-            CorrectAnswer:"Toronto",
+            CorrectAnswer:"2",
 
         }
 
@@ -80,9 +82,8 @@ $(document).ready(function () {
 
             currentQuestion = questionSelection[number];
             // set some variables that will be used to keep score
-            var correctAnswers = 0;
-            var wrongAnswers = 0;
-
+            
+            
             //function addQuestions (value) {
             //the question and answer section
             $("<div>").addClass("question insert 0-insert").html(currentQuestion.question).appendTo($(".questionJumbotron"));
@@ -107,9 +108,9 @@ $(document).ready(function () {
         
             function decrement() {
                
-                questionTime -= 1;
+               
  
-                if (questionTime <= 0 && number < questionSelection.length) { //if you run out of time
+                if (questionTime <= 0) { //if you run out of time
                      stop()
 
                      $(".timerJumbotron").empty();
@@ -119,14 +120,51 @@ $(document).ready(function () {
 
                      number++;
                     
+                     wrongAnswers++;
                      setTimeout(StartOnClick,2000);
+
 
                  } else {
 
-                    $(".timerJumbotron").html("<h2>" + questionTime + "</h2>");
-                
-                }
+                            $(".timerJumbotron").html("<h2>" + questionTime + "</h2>");
 
+                            $(".answers").unbind().click(function() {
+                                var id = $(this).attr("id");
+                                
+                                if (id===currentQuestion.CorrectAnswer) {
+                                    questionTime = 0;
+                                    stop();
+                                    
+                                    $(".timerJumbotron").empty();
+                                    $("<div>").addClass("Correct").append("<p>Correct!!!!</p>").appendTo($(".timerJumbotron"));
+                                    
+                                    correctAnswers++;
+                                    number++ ;
+                                    console.log(correctAnswers)
+                                    setTimeout(StartOnClick,2000); 
+
+                                } else if (id !== currentQuestion.CorrectAnswer) {
+                                   
+                                    questionTime = 0;
+                                    stop();
+
+                                    $(".timerJumbotron").empty();
+                                    $("<div>").addClass("Correct").append("<p>Wrong!!!!</p>").appendTo($(".timerJumbotron"));
+                                    
+                                    wrongAnswers++;
+                                    number++ ;
+
+                                    console.log(wrongAnswers);
+                                    setTimeout(StartOnClick,2000);   
+
+                                    }//end else for wrong answer
+                                    
+                                    //end if statement
+                            });//end answer on click
+                        
+                }//end else
+                
+                questionTime -= 1;
             };//end decrement function
      
             
@@ -139,6 +177,9 @@ $(document).ready(function () {
         } else  {
 
             $("<div>").addClass("btn btn-primary btn-lg start").html("Press Start To Begin").appendTo($(".questionJumbotron"));
+            $(".timerJumbotron").empty();
+            $("<div>").addClass("Correct").append("<p>You got "+correctAnswers+ " correct answers and "+wrongAnswers+ " wrong answers</p>").appendTo($(".timerJumbotron"));
+
             $(".start").on("click", function() {
                 number = 0;
                 StartOnClick();
